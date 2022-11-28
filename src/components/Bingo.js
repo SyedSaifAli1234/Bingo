@@ -4,7 +4,7 @@ const Bingo =()=> {
 
     return (
         <>
-            <div className="wrapper">
+            <div className="wrapper pb-5">
                 <span>B</span>
                 <span>I</span>
                 <span>N</span>

@@ -1,9 +1,10 @@
 import Card from "./Card";
 import {useEffect, useState} from "react";
 import Confetti from 'react-confetti';
+import {getData} from "./Helper";
 
-const Grid=(props)=>{
-    const [gridData, setGridData] = useState(props.data);
+const Grid=()=>{
+    const [gridData, setGridData] = useState(getData(5));
     const [rowNum, setRowNum] = useState([]);
     const [colNum, setColNum] = useState([]);
     const [LRDiagSelected, setLRDiagSelected] = useState(false);
@@ -11,6 +12,10 @@ const Grid=(props)=>{
     const [isCheck,setIsCheck] = useState(true);
     const [showConfetti,setShowConfetti] = useState(false);
     let counter = 1;
+
+    const areValidIndexes = (i,j) => {
+        return (i < gridData.length && j < gridData[0].length);
+    }
 
     const checkRows =()=>{
         let rowSelected = true;
@@ -21,7 +26,7 @@ const Grid=(props)=>{
                     rowSelected=false;
                     break;
                 }
-                if(!gridData[i][j].selected){
+                if(areValidIndexes(i,j) && !gridData[i][j].selected){
                     rowSelected = false;
                     break;
                 }
@@ -38,18 +43,18 @@ const Grid=(props)=>{
         let colSelected = true;
         for(let i=0; i<gridData.length; i++){
             for(let j=0; j<gridData.length; j++){
-                colSelected=true;
                 if(colNum.includes(i)){
                     colSelected=false;
                     break;
                 }
-                if(!gridData[j][i].selected){
+                if(areValidIndexes(j,i) && !gridData[j][i].selected){
                     colSelected = false;
                     break;
                 }
             }
             if(colSelected && !colNum.includes(i)){
                 setColNum([...colNum,i]);
+                colSelected=true;
                 break;
             }
         }
@@ -63,7 +68,7 @@ const Grid=(props)=>{
         let diagSelected = true;
         for(let i=0; i<gridData.length; i++){
             diagSelected=true;
-            if(!gridData[i][i].selected){
+            if(areValidIndexes(i,i) && !gridData[i][i].selected){
                 diagSelected = false;
                 break;
             }
@@ -81,7 +86,7 @@ const Grid=(props)=>{
         }
         for(let i =0,j=gridData.length-1; i<gridData.length; i++,j--){
             diagSelected=true;
-            if(!gridData[i][j].selected){
+            if(areValidIndexes(i,j) && !gridData[i][j].selected){
                 diagSelected = false;
                 break;
             }
@@ -93,7 +98,7 @@ const Grid=(props)=>{
     }
 
     const onSelect =(i,j)=>{
-        if(gridData[i][j].clickable) {
+        if(areValidIndexes(i,j) && gridData[i][j].clickable) {
             const clonedArray = [...gridData];
             const selectedCell = clonedArray[i][j];
             selectedCell.selected = true;
@@ -109,19 +114,23 @@ const Grid=(props)=>{
             while (isCheck) {
                 let i = Math.floor(Math.random() * gridData.length);
                 let j = Math.floor(Math.random() * gridData.length);
-                if (!gridData[i][j].selected) {
+                if (areValidIndexes(i,j) && !gridData[i][j].selected) {
                     const clonedArr = [...gridData];
                     const selectedCell = clonedArr[i][j];
                     const utter = new SpeechSynthesisUtterance();
                     utter.rate = 1.4;
                     utter.text = selectedCell.text;
                     window.speechSynthesis.speak(utter);
-                    selectedCell.clickable = true;
-                    selectedCell.cellColor = 'bg-warning'
-                    clonedArr[i][j] = selectedCell;
-                    setGridData(clonedArr);
-                    setIsCheck(false);
-                    break;
+                    setTimeout(()=> {
+                        selectedCell.clickable = true;
+                       // selectedCell.cellColor = 'bg-warning'
+                        clonedArr[i][j] = selectedCell;
+                        setGridData(clonedArr);
+                    },2000);
+                    if(selectedCell.render) {
+                        setIsCheck(false);
+                        break;
+                    }
                 }
             }
         }
@@ -130,8 +139,10 @@ const Grid=(props)=>{
     const isAllSelected = () => {
         let allSelected = true;
         const flatArr = gridData.flat();
-        for(let i =0; i< flatArr.length; i++) {
-            if(!flatArr[i].selected) {
+        const filteredArr = flatArr.filter(item => item.render);
+        console.log(filteredArr)
+        for(let i =0; i< filteredArr.length; i++) {
+            if(!filteredArr[i].selected) {
                 allSelected = false;
                 break;
             }
@@ -170,21 +181,10 @@ const Grid=(props)=>{
         }
     }
 
-    function shuffleMatrix(matrix){
-        for(let i = matrix.length-1; i > 0; i--){
-            const j = Math.floor(Math.random() * i)
-            const temp = matrix[i]
-            matrix[i] = matrix[j]
-            matrix[j] = temp
-        }
-        return matrix;
-    }
-
     useEffect(() => {
-        //setGridData(shuffleMatrix(gridData));
         checkBingo();
     },[gridData]);
-
+    
     return(
         <>
             {
@@ -195,18 +195,20 @@ const Grid=(props)=>{
                         numberOfPieces={700}
                         tweenDuration={1000}
                         gravity={1}
-                    />    )
+                    />
+                )
             }
             <div className="container text-center mt-5">
                 <div className="row row-cols-5 row-cols-sm-5 row-cols-md-5 g-0">
                     {
                         gridData.map((items, i)=>(
                             items.map((item, j)=>(
-                                <Card key={item.text} data={item.text} id={counter++} onSelect={()=>onSelect(i,j)} cellColor={item.cellColor} clickable={item.clickable}/>
+                                <Card key={item.text} data={item.text} id={counter++} onSelect={()=>onSelect(i,j)} cellColor={item.cellColor} clickable={item.clickable} render={item.render}/>
                             ))
                         ))
                     }
                 </div>
+                <button className="btn btn-lg btn-primary mt-3" onClick={()=>{setGridData(getData(5))}}>Reset</button>
             </div>
         </>
     )
