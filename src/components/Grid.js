@@ -5,13 +5,19 @@ import {getData} from "./Helper";
 
 const Grid=()=>{
     const [gridSize] = useState(5);
-    const [gridData, setGridData] = useState(getData(gridSize));
+    const [gridData, setGridData] = useState([]);
     const [rowNum, setRowNum] = useState([]);
     const [colNum, setColNum] = useState([]);
     const [LRDiagSelected, setLRDiagSelected] = useState(false);
     const [RLDiagSelected, setRLDiagSelected] = useState(false);
     const [showConfetti,setShowConfetti] = useState(false);
+    const [fadeOut,setFadeOut] = useState(true);
     let counter = 1;
+
+    const startGame=()=>{
+        setGridData(getData(5));
+        setFadeOut(false);
+    }
 
     const areValidIndexes = (i,j) => {
         return (i < gridData.length && j < gridData[0].length);
@@ -69,7 +75,6 @@ const Grid=()=>{
         }
         return colSelected;
     }
-
 
     const checkDiagsLR =()=>{
         if(LRDiagSelected) {
@@ -229,6 +234,11 @@ const Grid=()=>{
                 )
             }
             <div className="container text-center mt-5 mb-5">
+                {
+                    fadeOut?(
+                        <button className="btn btn-light mt-5" onClick={startGame}>Enter</button>
+                    ) :null
+                }
                 <div className="row row-cols-5 row-cols-lg-5 row-cols-md-5 row-cols-sm-5 row-cols-xs-5">
                     {
                         gridData.map((items, i)=>(
@@ -238,7 +248,11 @@ const Grid=()=>{
                         ))
                     }
                 </div>
-                <button className="btn btn-sm btn-dark mt-3 mb-5 custom-button" onClick={()=>{setGridData(getData(5))}}>Reset</button>
+                {
+                    !fadeOut?(
+                        <button className="btn btn-sm btn-dark mt-3 mb-5 custom-button" onClick={()=>{setGridData(getData(5))}}>Reset</button>
+                    ) :null
+                }
             </div>
         </>
     )
