@@ -11,7 +11,6 @@ const Bingo =()=> {
                 <span>G</span>
                 <span>O</span>
             </div>
-            <br/><br/>
         </>
     );
 }

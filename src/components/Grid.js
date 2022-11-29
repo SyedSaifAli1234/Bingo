@@ -233,10 +233,10 @@ const Grid=()=>{
                     />
                 )
             }
-            <div className="container text-center mt-5 mb-5">
+            <div id={"grid"} className="container text-center mt-5 mb-5">
                 {
                     fadeOut?(
-                        <button className="button-82-pushable" role="button" onClick={startGame}>
+                        <button id={"startBtn"} className="button-82-pushable" role="button" onClick={startGame}>
                             <span className="button-82-shadow"></span>
                             <span className="button-82-edge"></span>
                             <span className="button-82-front text">Start game</span>
@@ -254,7 +254,7 @@ const Grid=()=>{
                 </div>
                 {
                     !fadeOut?(
-                        <button className="btn btn-sm btn-dark mt-3 mb-5 custom-button" onClick={()=>{setGridData(getData(5))}}>Reset</button>
+                        <button className="button-81 mt-3 mb-5 custom-button" onClick={()=>{setGridData(getData(5))}}>Reset</button>
                     ) :null
                 }
             </div>
