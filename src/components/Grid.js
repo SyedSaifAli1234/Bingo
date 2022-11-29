@@ -239,7 +239,7 @@ const Grid=()=>{
                                         ))
                                     }
                                 </div>
-                                <button className="button-81 mt-3 mb-5 custom-button" onClick={()=>{setGridData(getData(5))}}>Reset</button>
+                                <button className="button-81 mt-3 reset-button" onClick={()=>{window.location.reload()}}>Reset</button>
                             </>
                     ) :null
                 }
