@@ -2,6 +2,7 @@ import Card from "./Card";
 import {useEffect, useState} from "react";
 import Confetti from 'react-confetti';
 import {getData} from "./Helper";
+import '../responsive.css';
 
 const Grid=()=>{
     const [gridData, setGridData] = useState(getData(5));

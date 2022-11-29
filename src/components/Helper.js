@@ -7,7 +7,7 @@ const texts = [
     'We will need more time for this', 'Is boarding complete?', 'Let\'s close the call',
     'We are running late', 'No updates from my side', 'Please mute yourself',
     'We need to speed-up a bit', 'Still working on the styling', 'Let\'s discuss it offline', 'I\'ve sent you a mail'
-    ,'Child noises in the background', 'Hello, hello?','Can everyone go on mute','Could you please get closer to the mic','Can we take this offline', 'Agha bhai'
+    ,'Child noises in the background', 'Hello, hello?','Can everyone go on mute','Could you please get closer to the mic','Can we take this offline'
 ];
 
 
