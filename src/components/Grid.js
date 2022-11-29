@@ -236,7 +236,11 @@ const Grid=()=>{
             <div className="container text-center mt-5 mb-5">
                 {
                     fadeOut?(
-                        <button className="btn btn-light mt-5" onClick={startGame}>Enter</button>
+                        <button className="button-82-pushable" role="button" onClick={startGame}>
+                            <span className="button-82-shadow"></span>
+                            <span className="button-82-edge"></span>
+                            <span className="button-82-front text">Start game</span>
+                        </button>
                     ) :null
                 }
                 <div className="row row-cols-5 row-cols-lg-5 row-cols-md-5 row-cols-sm-5 row-cols-xs-5">
