@@ -238,7 +238,7 @@ const Grid=()=>{
                         ))
                     }
                 </div>
-                <button className="btn btn-lg btn-dark mt-3 mb-5" onClick={()=>{setGridData(getData(5))}}>Reset</button>
+                <button className="btn btn-sm btn-dark mt-3 mb-5 custom-button" onClick={()=>{setGridData(getData(5))}}>Reset</button>
             </div>
         </>
     )

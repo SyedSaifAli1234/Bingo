@@ -4,6 +4,9 @@
         font-size: 35%;
         font-weight: bolder;
     }
+    .custom-button {
+        font-size: 35% !important;
+    }
 }
 
 
@@ -14,6 +17,9 @@
         font-size: 45%;
         font-weight: bolder;
     }
+    .custom-button {
+        font-size: 45% !important;
+    }
 }
 
 
@@ -23,6 +29,9 @@
     .custom-card {
         font-size: 90%;
         font-weight: bolder;
+    }
+    .custom-button {
+        font-size: 50% !important;
     }
 }
 
