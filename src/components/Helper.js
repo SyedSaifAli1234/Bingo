@@ -1,13 +1,13 @@
 const texts = [
     'We cannot hear you', 'Can you hear me?', 'I hear background noise',
-    'I\'m late', 'Need to run to next meeting', 'Is Ryan here?',
+    'I\'m late', 'Need to run to the next meeting', 'Is Ryan here?',
     'Can you see my screen?', 'Who can share the screen?', 'Let me share my screen',
     'Client is asking for a demo', 'Connection issues', 'Can you repeat please?',
-    'Any blockers?', 'Tomorrow I will have day off', 'Who can help me with this problem?',
+    'Any blockers?', 'Tomorrow I will have a day off', 'Who can help me with this problem?',
     'We will need more time for this', 'Is boarding complete?', 'Let\'s close the call',
     'We are running late', 'No updates from my side', 'Please mute yourself',
     'We need to speed-up a bit', 'Still working on the styling', 'Let\'s discuss it offline', 'I\'ve sent you a mail'
-    ,'Child noises in the background', 'Hello, hello?','Can everyone go on mute','Could you please get closer to the mic','Can we take this offline'
+    ,'Child noises in the background', 'Hello, hello?','Can everyone go on mute','Could you please get closer to the mic','We can discuss tomorrow'
 ];
 
 

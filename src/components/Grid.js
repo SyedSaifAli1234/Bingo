@@ -183,7 +183,7 @@ const Grid=()=>{
         const utter = new SpeechSynthesisUtterance();
         if(gridData.length > 0) {
             if (checkRows() || checkCols() || checkDiagsRL() || checkDiagsLR()) {
-                utter.text = 'Congrats, you have made Bingo!!';
+                utter.text = 'Bingo!!';
                 if(!isAnyClickable()) {
                     window.speechSynthesis.speak(utter);
                 }
@@ -193,7 +193,7 @@ const Grid=()=>{
                 }
             }
             if (isAllSelected()) {
-                utter.text = 'Game Completed, You Won!!';
+                utter.text = 'You Win!!';
                 window.speechSynthesis.speak(utter);
             }
         }
