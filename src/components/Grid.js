@@ -5,7 +5,7 @@ import {getData} from "./Helper";
 
 const Grid=()=>{
     const [gridSize] = useState(5);
-    const [gridData, setGridData] = useState([]);
+    const [gridData, setGridData] = useState(getData(5));
     const [rowNum, setRowNum] = useState([]);
     const [colNum, setColNum] = useState([]);
     const [LRDiagSelected, setLRDiagSelected] = useState(false);
@@ -15,8 +15,8 @@ const Grid=()=>{
     let counter = 1;
 
     const startGame=()=>{
-        setGridData(getData(5));
         setFadeOut(false);
+        selectRandomCell();
     }
 
     const areValidIndexes = (i,j) => {
@@ -144,31 +144,23 @@ const Grid=()=>{
     }
 
     const selectRandomCell = async () => {
-        let isBreak = false;
         const utter = new SpeechSynthesisUtterance();
         if(gridData.length > 0) {
-            while (!isBreak && !isAnyClickable() && !isAllSelected()) {
+            while (!isAllSelected()) {
                 let i = Math.floor(Math.random() * (gridData.length-1 + 1));
                 let j = Math.floor(Math.random() * (gridData.length-1 + 1));
-                if (areValidIndexes(i,j) && !gridData[i][j].selected && !gridData[i][j].clickable) {
+                if (areValidIndexes(i,j) && !gridData[i][j].selected) {
                     const clonedArr = [...gridData];
                     const selectedCell = clonedArr[i][j];
                     utter.text = selectedCell.text;
-                    if(!isAnyClickable()) {
-                        window.speechSynthesis.speak(utter);
-                    }
+                    window.speechSynthesis.speak(utter);
                     utter.onend = async () => {
-                        if (!selectedCell.render) {
-                            await sleep(4000);
-                        }
-                        if (!isAnyClickable()) {
-                            selectedCell.clickable = true;
-                            //selectedCell.cellColor = 'bg-warning'
-                            clonedArr[i][j] = selectedCell;
-                            setGridData(clonedArr);
-                        }
+                        selectedCell.clickable = true;
+                        //selectedCell.cellColor = 'bg-warning'
+                        clonedArr[i][j] = selectedCell;
+                        setGridData(clonedArr);
                     }
-                    isBreak = true;
+                    await sleep(6000);
                 }
             }
         }
@@ -187,12 +179,6 @@ const Grid=()=>{
         return allSelected;
     }
 
-    const callSelectRandom = () => {
-        if(!isAllSelected()) {
-            selectRandomCell();
-        }
-    }
-
     const checkBingo =()=>{
         const utter = new SpeechSynthesisUtterance();
         if(gridData.length > 0) {
@@ -204,10 +190,7 @@ const Grid=()=>{
                 setShowConfetti(true);
                 utter.onend = () => {
                     setShowConfetti(false);
-                    callSelectRandom();
                 }
-            } else {
-                callSelectRandom();
             }
             if (isAllSelected()) {
                 utter.text = 'Game Completed, You Won!!';
@@ -243,18 +226,21 @@ const Grid=()=>{
                         </button>
                     ) :null
                 }
-                <div className="row row-cols-5 row-cols-lg-5 row-cols-md-5 row-cols-sm-5 row-cols-xs-5">
-                    {
-                        gridData.map((items, i)=>(
-                            items.map((item, j)=>(
-                                <Card key={item.text} data={item.text} id={counter++} onSelect={()=>onSelect(i,j)} cellColor={item.cellColor} clickable={item.clickable} render={item.render}/>
-                            ))
-                        ))
-                    }
-                </div>
                 {
                     !fadeOut?(
-                        <button className="button-81 mt-3 mb-5 custom-button" onClick={()=>{setGridData(getData(5))}}>Reset</button>
+                            <>
+                                <div className="row row-cols-5 row-cols-lg-5 row-cols-md-5 row-cols-sm-5 row-cols-xs-5">
+                                    {
+                                        gridData.map((items, i)=>(
+                                            items.map((item, j)=>(
+                                                <Card key={item.text} data={item.text} id={counter++} onSelect={()=>onSelect(i,j)} cellColor={item.cellColor}
+                                                      clickable={item.clickable} render={item.render}/>
+                                            ))
+                                        ))
+                                    }
+                                </div>
+                                <button className="button-81 mt-3 mb-5 custom-button" onClick={()=>{setGridData(getData(5))}}>Reset</button>
+                            </>
                     ) :null
                 }
             </div>
