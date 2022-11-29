@@ -228,7 +228,7 @@ const Grid=()=>{
                     />
                 )
             }
-            <div className="container text-center mt-5">
+            <div className="container text-center mt-5 mb-5">
                 <div className="row row-cols-5 row-cols-lg-5 row-cols-md-5 row-cols-sm-5 row-cols-xs-5">
                     {
                         gridData.map((items, i)=>(
@@ -238,7 +238,7 @@ const Grid=()=>{
                         ))
                     }
                 </div>
-                <button className="btn btn-lg btn-primary mt-3 mb-3" onClick={()=>{setGridData(getData(5))}}>Reset</button>
+                <button className="btn btn-lg btn-dark mt-3 mb-5" onClick={()=>{setGridData(getData(5))}}>Reset</button>
             </div>
         </>
     )
