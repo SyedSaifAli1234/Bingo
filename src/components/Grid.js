@@ -121,6 +121,7 @@ const Grid=()=>{
             selectedCell.clickable = false;
             clonedArray[i][j] = selectedCell;
             setGridData(clonedArray);
+            checkBingo();
         }
     }
 
@@ -146,7 +147,7 @@ const Grid=()=>{
     const selectRandomCell = async () => {
         const utter = new SpeechSynthesisUtterance();
         if(gridData.length > 0) {
-            while (!isAllSelected()) {
+            while (!isAllSelected() && !showConfetti) {
                 let i = Math.floor(Math.random() * (gridData.length-1 + 1));
                 let j = Math.floor(Math.random() * (gridData.length-1 + 1));
                 if (areValidIndexes(i,j) && !gridData[i][j].selected) {
@@ -154,9 +155,9 @@ const Grid=()=>{
                     const selectedCell = clonedArr[i][j];
                     utter.text = selectedCell.text;
                     window.speechSynthesis.speak(utter);
-                    utter.onend = async () => {
+                    utter.onend = () => {
                         selectedCell.clickable = true;
-                        //selectedCell.cellColor = 'bg-warning'
+                        selectedCell.cellColor = 'bg-warning'
                         clonedArr[i][j] = selectedCell;
                         setGridData(clonedArr);
                     }
@@ -184,11 +185,10 @@ const Grid=()=>{
         if(gridData.length > 0) {
             if (checkRows() || checkCols() || checkDiagsRL() || checkDiagsLR()) {
                 utter.text = 'Bingo!!';
-                if(!isAnyClickable()) {
-                    window.speechSynthesis.speak(utter);
-                }
+                window.speechSynthesis.speak(utter);
                 setShowConfetti(true);
-                utter.onend = () => {
+                utter.onend = async () => {
+                    await sleep(2000);
                     setShowConfetti(false);
                 }
             }
@@ -199,10 +199,6 @@ const Grid=()=>{
         }
     }
 
-    useEffect(() => {
-        checkBingo();
-    },[gridData]);
-    
     return(
         <>
             {
@@ -219,28 +215,28 @@ const Grid=()=>{
             <div id={"grid"} className="container text-center mt-5 mb-5">
                 {
                     fadeOut?(
-                        <button id={"startBtn"} className="button-82-pushable" role="button" onClick={startGame}>
-                            <span className="button-82-shadow"></span>
-                            <span className="button-82-edge"></span>
+                        <button id={"startBtn"} className="button-82-pushable"  onClick={startGame}>
+                            <span className="button-82-shadow"/>
+                            <span className="button-82-edge"/>
                             <span className="button-82-front text">Start game</span>
                         </button>
                     ) :null
                 }
                 {
                     !fadeOut?(
-                            <>
-                                <div className="row row-cols-5 row-cols-lg-5 row-cols-md-5 row-cols-sm-5 row-cols-xs-5">
-                                    {
-                                        gridData.map((items, i)=>(
-                                            items.map((item, j)=>(
-                                                <Card key={item.text} data={item.text} id={counter++} onSelect={()=>onSelect(i,j)} cellColor={item.cellColor}
-                                                      clickable={item.clickable} render={item.render}/>
-                                            ))
+                        <>
+                            <div className="row row-cols-5 row-cols-lg-5 row-cols-md-5 row-cols-sm-5 row-cols-xs-5">
+                                {
+                                    gridData.map((items, i)=>(
+                                        items.map((item, j)=>(
+                                            <Card key={item.text} data={item.text} id={counter++} onSelect={()=>onSelect(i,j)} cellColor={item.cellColor}
+                                                  clickable={item.clickable} render={item.render}/>
                                         ))
-                                    }
-                                </div>
-                                <button className="button-81 mt-3 reset-button" onClick={()=>{window.location.reload()}}>Reset</button>
-                            </>
+                                    ))
+                                }
+                            </div>
+                            <button className="button-81 mt-3 reset-button" onClick={()=>{window.location.reload()}}>Reset</button>
+                        </>
                     ) :null
                 }
             </div>
